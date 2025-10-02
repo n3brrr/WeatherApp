@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="location">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/>
+                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/>
+                </svg>
+                <span>Cargando...</span>
+            </div>
+            <div class="date">
+                <p>Cargando...</p>
+            </div>
+        </header>
+
+        <!-- PANEL IZQUIERDO: Clima Actual -->
+        <section class="current-weather">
+            <div class="temp-section">
+                <h1>--°</h1>
+                <p class="description">Cargando...</p>
+            </div>
+            <div class="metrics">
+                <div class="metric">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2"/>
+                    </svg>
+                    <span>Viento</span>
+                    <span class="metric-value">-- km/h</span>
+                </div>
+                <div class="metric">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                    </svg>
+                    <span>Humedad</span>
+                    <span class="metric-value">--%</span>
+                </div>
+                <div class="metric">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v10m0 0l3-3m-3 3l-3-3"/>
+                    </svg>
+                    <span>Mín</span>
+                    <span class="metric-value">--°</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANEL CENTRAL: Icono -->
+        <div class="weather-icon-container">
+            <img src="assets/sun.svg" alt="weather" class="weather-icon">
+        </div>
+
+        <!-- PANEL DERECHO: Pronóstico 6 Días -->
+        <section class="daily-forecast">
+            <!-- Se llena con JS -->
+        </section>
+
+        <!-- FOOTER: Gráfica por Horas -->
+        <section class="hourly-chart">
+            <!-- Se llena con JS -->
+        </section>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
