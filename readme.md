@@ -31,6 +31,7 @@ A modern and elegant web application to check real-time weather conditions for a
 ## 🚀 Demo
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x400/1e3a8a/ffffff?text=WeatherApp+Screenshot" alt="WeatherApp Demo" width="80%">
+  <img src="screenshot/WeatherApp-Preview.png" alt="WeatherApp Demo" width="80%">
 </div>
+
 
