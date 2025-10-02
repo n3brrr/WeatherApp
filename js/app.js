@@ -6,48 +6,89 @@
 
 const API_URL = 'https://api.open-meteo.com/v1/forecast';
 
-// Mapeo con tus nombres de archivos
-const weatherIcons = {
+// PNG para iconos CENTRALES (grandes)
+const weatherIconsCenter = {
   // Sol
-  0: 'assets/sol.png',
-  1: 'assets/sol.png',
+  0: 'assets/Sol.png',
+  1: 'assets/Sol.png',
   
   // Sol y nubes
-  2: 'assets/sol-nubes.svg',
+  2: 'assets/Sol con nubes.png',
   
   // Nubes
-  3: 'assets/nubes.svg',
+  3: 'assets/SOl con nubajsjajss.png',
   
-  // Niebla
-  45: 'assets/fog.svg',
-  48: 'assets/fog.svg',
+  // Niebla (usa nubes como placeholder)
+  45: 'assets/cloud.svg',
+  48: 'assets/cloud.svg',
   
   // Lluvia
-  51: 'assets/lluvia.svg',
-  53: 'assets/lluvia.svg',
-  55: 'assets/lluvia.svg',
-  61: 'assets/lluvia.svg',
-  63: 'assets/lluvia.svg',
-  65: 'assets/lluvia.svg',
-  80: 'assets/lluvia.svg',
-  81: 'assets/lluvia.svg',
-  82: 'assets/lluvia.svg',
+  51: 'assets/cloud-rain.svg',
+  53: 'assets/cloud-rain.svg',
+  55: 'assets/cloud-rain.svg',
+  61: 'assets/cloud-rain.svg',
+  63: 'assets/cloud-rain.svg',
+  65: 'assets/cloud-rain.svg',
+  80: 'assets/cloud-rain.svg',
+  81: 'assets/cloud-rain.svg',
+  82: 'assets/cloud-rain.svg',
   
-  // Tormenta eléctrica
-  95: 'assets/tormenta.svg',
-  96: 'assets/tormenta.svg',
-  99: 'assets/tormenta.svg',
+  // Tormenta (usa lluvia como placeholder)
+  95: 'assets/cloud-rain.svg',
+  96: 'assets/cloud-rain.svg',
+  99: 'assets/cloud-rain.svg',
   
   // Nieve
-  71: 'assets/nieve.svg',
-  73: 'assets/nieve.svg',
-  75: 'assets/nieve.svg',
-  77: 'assets/nieve.svg',
-  85: 'assets/nieve.svg',
-  86: 'assets/nieve.svg'
+  71: 'assets/cloud-snow.svg',
+  73: 'assets/cloud-snow.svg',
+  75: 'assets/cloud-snow.svg',
+  77: 'assets/cloud-snow.svg',
+  85: 'assets/cloud-snow.svg',
+  86: 'assets/cloud-snow.svg'
 };
 
-// Descripciones simplificadas
+// SVG para iconos PEQUEÑOS (pronóstico días)
+const weatherIconsSmall = {
+  // Sol
+  0: 'assets/sun.svg',
+  1: 'assets/sun.svg',
+  
+  // Sol y nubes
+  2: 'assets/sun-cloud.svg',
+  
+  // Nubes
+  3: 'assets/cloud.svg',
+  
+  // Niebla
+  45: 'assets/cloud.svg',
+  48: 'assets/cloud.svg',
+  
+  // Lluvia
+  51: 'assets/cloud-rain.svg',
+  53: 'assets/cloud-rain.svg',
+  55: 'assets/cloud-rain.svg',
+  61: 'assets/cloud-rain.svg',
+  63: 'assets/cloud-rain.svg',
+  65: 'assets/cloud-rain.svg',
+  80: 'assets/cloud-rain.svg',
+  81: 'assets/cloud-rain.svg',
+  82: 'assets/cloud-rain.svg',
+  
+  // Tormenta
+  95: 'assets/cloud-rain.svg',
+  96: 'assets/cloud-rain.svg',
+  99: 'assets/cloud-rain.svg',
+  
+  // Nieve
+  71: 'assets/cloud-snow.svg',
+  73: 'assets/cloud-snow.svg',
+  75: 'assets/cloud-snow.svg',
+  77: 'assets/cloud-snow.svg',
+  85: 'assets/cloud-snow.svg',
+  86: 'assets/cloud-snow.svg'
+};
+
+// Descripciones
 const weatherDescriptions = {
   0: 'Despejado',
   1: 'Despejado',
@@ -88,8 +129,12 @@ function getFormattedDate() {
   return `${dayName}, ${monthName} ${day}`;
 }
 
-function getWeatherIcon(code) {
-  return weatherIcons[code] || 'assets/sol.png';
+function getWeatherIconCenter(code) {
+  return weatherIconsCenter[code] || 'assets/Sol.png';
+}
+
+function getWeatherIconSmall(code) {
+  return weatherIconsSmall[code] || 'assets/sun.svg';
 }
 
 function getWeatherDescription(code) {
@@ -103,7 +148,7 @@ function getWeatherDescription(code) {
 function getUserLocation() {
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
-      resolve({ lat: 36.7213, lon: -4.4214 }); // Málaga por defecto
+      resolve({ lat: 36.7213, lon: -4.4214 });
       return;
     }
 
@@ -115,7 +160,7 @@ function getUserLocation() {
         });
       },
       () => {
-        resolve({ lat: 36.7213, lon: -4.4214 }); // Málaga si falla
+        resolve({ lat: 36.7213, lon: -4.4214 });
       }
     );
   });
@@ -168,19 +213,19 @@ function updateCurrentWeather(data, cityName) {
   document.querySelector('.temp-section .description').textContent = 
     getWeatherDescription(current.weathercode);
   
-  // Icono principal
+  // Icono principal GRANDE (PNG)
   const weatherIcon = document.querySelector('.weather-icon');
-  weatherIcon.src = getWeatherIcon(current.weathercode);
+  weatherIcon.src = getWeatherIconCenter(current.weathercode);
   
   // Viento
   document.querySelectorAll('.metric-value')[0].textContent = `${Math.round(current.windspeed)} km/h`;
   
-  // Humedad (del hourly data actual)
+  // Humedad
   const currentHour = new Date().getHours();
   const humidity = data.hourly.relativehumidity_2m[currentHour] || 60;
   document.querySelectorAll('.metric-value')[1].textContent = `${humidity}%`;
   
-  // Mínima del día
+  // Mínima
   const minTemp = Math.round(data.daily.temperature_2m_min[0]);
   document.querySelectorAll('.metric-value')[2].textContent = `${minTemp}°`;
   
@@ -197,22 +242,122 @@ function updateHourlyForecast(data) {
   const now = new Date();
   const currentHour = now.getHours();
   
+  // Arrays para datos
+  const temps = [];
+  const hours = [];
+  
   for (let i = 0; i < 8; i++) {
-    const temp = Math.round(hourlyData.temperature_2m[currentHour + i]);
-    const hour = (currentHour + i) % 24;
+    temps.push(Math.round(hourlyData.temperature_2m[currentHour + i]));
+    hours.push((currentHour + i) % 24);
+  }
+  
+  // Calcular rango de temperaturas
+  const minTemp = Math.min(...temps);
+  const maxTemp = Math.max(...temps);
+  const tempRange = maxTemp - minTemp || 10;
+  
+  // Crear contenedor principal
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'relative';
+  wrapper.style.width = '100%';
+  wrapper.style.height = '150px';
+  
+  // Crear SVG para la línea
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.style.width = '100%';
+  svg.style.height = '100%';
+  svg.style.position = 'absolute';
+  svg.style.top = '0';
+  svg.style.left = '0';
+  
+  // Definir gradiente
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+  gradient.setAttribute('id', 'lineGradient');
+  gradient.setAttribute('x1', '0%');
+  gradient.setAttribute('x2', '100%');
+  
+  const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  stop1.setAttribute('offset', '0%');
+  stop1.setAttribute('stop-color', 'rgba(199, 157, 80, 0.3)');
+  
+  const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  stop2.setAttribute('offset', '50%');
+  stop2.setAttribute('stop-color', 'rgba(199, 157, 80, 1)');
+  
+  const stop3 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+  stop3.setAttribute('offset', '100%');
+  stop3.setAttribute('stop-color', 'rgba(199, 157, 80, 0.3)');
+  
+  gradient.appendChild(stop1);
+  gradient.appendChild(stop2);
+  gradient.appendChild(stop3);
+  defs.appendChild(gradient);
+  svg.appendChild(defs);
+  
+  // Calcular puntos con padding
+  const padding = 5;
+  const points = temps.map((temp, index) => {
+    const xPercent = (index / (temps.length - 1)) * 100;
+    const normalized = (temp - minTemp) / tempRange;
+    const yPercent = 100 - (normalized * 60 + 20); // Invertir Y
+    return { x: xPercent, y: yPercent, temp };
+  });
+  
+  // Crear path con curvas Bezier suaves
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  let pathData = `M ${points[0].x} ${points[0].y}`;
+  
+  for (let i = 0; i < points.length - 1; i++) {
+    const current = points[i];
+    const next = points[i + 1];
     
-    const hourItem = document.createElement('div');
-    hourItem.className = 'hour-item';
+    const controlX1 = current.x + (next.x - current.x) / 3;
+    const controlY1 = current.y;
+    const controlX2 = current.x + (next.x - current.x) * 2 / 3;
+    const controlY2 = next.y;
     
-    hourItem.innerHTML = `
-      <span class="hour-temp">${temp}°</span>
+    pathData += ` C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${next.x} ${next.y}`;
+  }
+  
+  path.setAttribute('d', pathData);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', 'url(#lineGradient)');
+  path.setAttribute('stroke-width', '2.5');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  path.setAttribute('vector-effect', 'non-scaling-stroke');
+  
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('preserveAspectRatio', 'none');
+  svg.appendChild(path);
+  
+  wrapper.appendChild(svg);
+  
+  // Crear puntos y etiquetas
+  points.forEach((point, index) => {
+    const itemWrapper = document.createElement('div');
+    itemWrapper.style.position = 'absolute';
+    itemWrapper.style.left = `${point.x}%`;
+    itemWrapper.style.top = `${point.y}%`;
+    itemWrapper.style.transform = 'translate(-50%, -50%)';
+    itemWrapper.style.display = 'flex';
+    itemWrapper.style.flexDirection = 'column';
+    itemWrapper.style.alignItems = 'center';
+    itemWrapper.style.gap = '5px';
+    
+    itemWrapper.innerHTML = `
+      <span class="hour-temp">${temps[index]}°</span>
       <div class="hour-dot"></div>
-      <span class="hour-time">${hour.toString().padStart(2, '0')}:00</span>
+      <span class="hour-time">${hours[index].toString().padStart(2, '0')}:00</span>
     `;
     
-    chartContainer.appendChild(hourItem);
-  }
+    wrapper.appendChild(itemWrapper);
+  });
+  
+  chartContainer.appendChild(wrapper);
 }
+
 
 function updateDailyForecast(data) {
   const dailyData = data.daily;
@@ -224,7 +369,7 @@ function updateDailyForecast(data) {
     const dayName = daysOfWeek[date.getDay()];
     const temp = Math.round(dailyData.temperature_2m_max[i]);
     const weatherCode = dailyData.weathercode[i];
-    const icon = getWeatherIcon(weatherCode);
+    const icon = getWeatherIconSmall(weatherCode); // SVG pequeños
     
     const dayItem = document.createElement('div');
     dayItem.className = 'day-item';
