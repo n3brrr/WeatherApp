@@ -18,7 +18,7 @@ A modern and elegant web application to check real-time weather conditions for a
 
 ## ✨ Features
 
-🔍 **Smart Search** - Find weather for any city worldwide
+🔍 **Geolocalitation** - Uses your location to give you accurate information
 
 🌡️ **Real-time Data** - Up-to-date weather information instantly
 
@@ -33,3 +33,4 @@ A modern and elegant web application to check real-time weather conditions for a
 <div align="center">
   <img src="https://via.placeholder.com/800x400/1e3a8a/ffffff?text=WeatherApp+Screenshot" alt="WeatherApp Demo" width="80%">
 </div>
+
