@@ -18,7 +18,7 @@
 
 ## ⚡ Resumen
 
-WeatherApp consume la API de OpenWeatherMap para mostrar pronósticos en tiempo real con geolocalización automática y búsqueda manual. Incluye persistencia local y UI responsive para móviles y desktop[web:27][web:28].
+WeatherApp consume la API de OpenWeatherMap para mostrar pronósticos en tiempo real con geolocalización automática y búsqueda manual. Incluye persistencia local y UI responsive para móviles y desktop.
 
 ### ✨ Características
 
@@ -41,7 +41,7 @@ WeatherApp consume la API de OpenWeatherMap para mostrar pronósticos en tiempo 
 ### Prerequisitos
 
 - Navegador moderno (Chrome 90+, Firefox 88+, Safari 14+)
-- API Key de [OpenWeatherMap](https://openweathermap.org/api) (gratuita)
+- API Key de [OpenWeatherMap](https://openweathermap.org/api)
 
 ### Setup Rápido
 
@@ -59,7 +59,6 @@ Abrir en navegador
 open index.html
 
 o usar Live Server en VS Code
-text
 
 ### Variables de Entorno
 
@@ -75,8 +74,6 @@ WEATHER_API_KEY=tu_api_key_aqui
 DEFAULT_CITY=Barcelona
 UNITS=metric
 
-text
-
 ---
 
 ## 💻 Uso Básico
@@ -90,7 +87,6 @@ getCurrentWeather();
 // Acceder a datos guardados
 const lastCity = localStorage.getItem('lastSearchedCity');
 
-text
 
 **La aplicación se inicializa automáticamente al cargar `index.html`**[attached_file:1].
 
@@ -99,33 +95,29 @@ text
 ## 📁 Estructura del Proyecto
 
 WeatherApp/
-├── index.html # Estructura HTML principal
-├── styles.css # Estilos responsive + variables CSS
-├── app.js # Lógica de API + DOM manipulation
-├── .env.example # Plantilla de configuración
-├── README.md
-└── assets/
-├── icons/ # Iconos SVG del clima (50 estados)
-└── fonts/ # Roboto, Open Sans
 
-text
+├── index.html # Estructura HTML principal
+
+├── styles.css # Estilos responsive + variables CSS
+
+├── app.js # Lógica de API + DOM manipulation
+
+├── .env.example # Plantilla de configuración
+
+├── README.md
+
+└── assets/
+
+├── icons/ # Iconos SVG del clima (50 estados)
+
+└── fonts/ # Roboto, Open Sans
 
 ---
 
 ## 🔄 Arquitectura
 
-graph LR
-A[Usuario] -->|Input ciudad| B[app.js]
-A -->|Geolocalización| B
-B -->|HTTP GET| C[OpenWeather API 3.0]
-C -->|JSON Response| D[Procesamiento]
-D -->|Actualizar DOM| E[UI Render]
-E -->|Guardar| F[LocalStorage]
-F -.->|Cargar| B
 
-text
-
-**Flujo de datos:** El usuario introduce una ciudad o activa geolocalización → `app.js` realiza fetch a OpenWeatherMap → Respuesta JSON se procesa y actualiza el DOM → Última búsqueda se guarda en localStorage para persistencia[web:28][web:30].
+**Flujo de datos:** El usuario introduce una ciudad o activa geolocalización → `app.js` realiza fetch a OpenWeatherMap → Respuesta JSON se procesa y actualiza el DOM → Última búsqueda se guarda en localStorage para persistencia.
 
 ---
 
@@ -142,7 +134,7 @@ npm run lint:js
 npm run lint:css
 npm run lint:html
 
-text
+ 
 
 ![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen?style=flat)
 ![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen?style=flat)
@@ -169,4 +161,5 @@ MIT License - ver [LICENSE](https://github.com/n3brrr/WeatherApp/blob/main/LICEN
 ![GitHub Forks](https://img.shields.io/github/forks/n3brrr/WeatherApp?style=social)
 
 </div>
+
 
