@@ -35,17 +35,8 @@ export function createRefreshControl(
   const inner = document.createElement('div');
   inner.className = 'footer__inner';
 
-  const meta = document.createElement('div');
-  meta.className = 'footer__meta';
-
-  const source = document.createElement('span');
-  source.className = 'footer__source';
-  source.textContent = 'OPEN-METEO';
-
   const updated = document.createElement('span');
   updated.className = 'footer__updated';
-
-  meta.append(source, updated);
 
   const button = document.createElement('button');
   button.type = 'button';
@@ -54,7 +45,7 @@ export function createRefreshControl(
   button.append(refreshIcon(), document.createTextNode('ACTUALIZAR'));
   button.addEventListener('click', onRefresh);
 
-  inner.append(meta, button);
+  inner.append(updated, button);
   container.replaceChildren(inner);
 
   return { button, updated };

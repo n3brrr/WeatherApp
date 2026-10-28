@@ -11,36 +11,15 @@
   padding-top: var(--space-2);
 }
 
-.footer__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px var(--space-3);
-  align-items: center;
-}
-
-.footer__source,
 .footer__updated {
-  color: var(--ink-muted);
+  color: var(--ink);
   font-family: var(--font-mono);
   font-size: 9px;
-  font-weight: 400;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.14em;
   line-height: 1.2;
   text-transform: uppercase;
-}
-
-.footer__source {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-
-.footer__source::before {
-  width: 4px;
-  height: 4px;
-  content: '';
-  background: var(--ochre);
 }
 
 .footer__updated:empty {

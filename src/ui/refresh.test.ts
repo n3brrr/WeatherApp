@@ -13,10 +13,9 @@ function mount(onRefresh = vi.fn()) {
 }
 
 describe('createRefreshControl', () => {
-  it('crea fuente, actualización y botón', () => {
+  it('crea actualización y botón', () => {
     const { container, control } = mount();
 
-    expect(container.querySelector('.footer__source')?.textContent).toBe('OPEN-METEO');
     expect(container.querySelector('.footer__updated')).toBe(control.updated);
     expect(container.querySelector('.footer__refresh')?.textContent).toBe('ACTUALIZAR');
     expect(control.button.getAttribute('aria-label')).toBe('Actualizar datos del clima');
