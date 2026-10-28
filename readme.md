@@ -1,36 +1,55 @@
-<div align="center">
+# WeatherApp
 
-# 🌤️ WeatherApp
+Dashboard meteorológico con una estética editorial suizo-japonesa: papel cálido, tinta carbón, acentos coral y ocre, ilustraciones geométricas planas y tipografía Space Grotesk + IBM Plex Mono. La interfaz está en español.
 
-### Your Personal Weather Companion
+Muestra el clima actual, tres métricas (viento, humedad y mínima), el pronóstico de seis días y la curva de temperatura de las próximas ocho horas. La ubicación se obtiene del navegador y, si no responde en ocho segundos o se deniega el permiso, se usa Málaga como ejemplo con un aviso visible.
 
-A modern and elegant web application to check real-time weather conditions for any city worldwide.
+## Stack
 
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+- [Vite](https://vite.dev/) + TypeScript
+- [pnpm](https://pnpm.io/) como gestor de paquetes
+- CSS propio con tokens; sin framework de UI ni dependencias en tiempo de ejecución
+- [Vitest](https://vitest.dev/) + jsdom para tests
+- ESLint + typescript-eslint
 
-[Report Bug](https://github.com/n3brrr/WeatherApp/issues)
+## Comandos
 
-</div>
+```bash
+pnpm install       # instala dependencias
+pnpm dev           # servidor de desarrollo
+pnpm run build     # typecheck + build de producción
+pnpm run lint      # ESLint sin warnings
+pnpm run test      # suite de tests
+pnpm run check     # lint + build + test
+pnpm run preview   # sirve el build de producción
+```
 
----
+## Estructura
 
-## ✨ Features
+```text
+src/
+├── api/       # Open-Meteo, geocodificación inversa y geolocalización
+├── domain/    # tipos, códigos WMO, formato y selección de pronóstico
+├── ui/        # renderizado del DOM y estados
+├── styles/    # tokens y CSS por componente
+├── utils/     # helpers de DOM
+├── app.ts     # orquestación con dependencias inyectables
+└── main.ts    # entrada: dependencias reales y arranque
+```
 
-🔍 **Geolocalitation** - Uses your location to give you accurate information
+## Datos
 
-🌡️ **Real-time Data** - Up-to-date weather information instantly
+- **Open-Meteo** para el pronóstico, con la zona horaria del lugar.
+- **BigDataCloud** para resolver el nombre de la ubicación sin API key.
+- Si la geocodificación falla, el clima sigue visible y el encabezado muestra «Tu ubicación».
 
-💨 **Complete Metrics** - Temperature, humidity, wind speed, and more
+La actualización manual solo vuelve a consultar Open-Meteo: conserva los datos en pantalla y, si falla, muestra un aviso con reintento.
 
-🎨 **Responsive Design** - Works perfectly on any device
+## Alcance
 
-⚡ **Fast & Lightweight** - Smooth interface without heavy dependencies
+La fase actual diseña escritorio y tablet por encima de 768 px. Por debajo de 768 px la interfaz se apila y sigue siendo funcional, pero el diseño fino de móvil queda para una fase posterior.
 
-## 🚀 Demo
+## Documentación
 
-<div align="center">
-  <img src="https://via.placeholder.com/800x400/1e3a8a/ffffff?text=WeatherApp+Screenshot" alt="WeatherApp Demo" width="80%">
-</div>
-
+- [Especificación de diseño](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md)
+- [Plan de implementación](docs/superpowers/plans/2026-10-28-weather-app-refactor.md)
