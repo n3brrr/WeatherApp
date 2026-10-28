@@ -1,1 +1,110 @@
-/* Se completa en la tarea 8. */
+.current {
+  min-width: 0;
+}
+
+.current__temperature {
+  display: flex;
+  align-items: flex-start;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(96px, 13vw, 200px);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  animation: current-rise 600ms var(--ease-out) both;
+}
+
+.current__temp {
+  display: block;
+}
+
+.current__unit {
+  margin-top: 0.22em;
+  margin-left: 0.12em;
+  color: var(--ink-muted);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.current__description {
+  margin-top: var(--space-3);
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.25;
+}
+
+.current__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+}
+
+.current__metric {
+  min-width: 0;
+}
+
+.current__metric-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.current__metric-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.current__metric-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.current__wind,
+.current__humidity,
+.current__min {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+@keyframes current-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1023px) {
+  .current__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-1);
+  }
+}
+
+@media (max-width: 768px) {
+  .current__temperature {
+    font-size: clamp(72px, 24vw, 140px);
+  }
+
+  .current__metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
