@@ -1,0 +1,33 @@
+:root {
+  /* Color */
+  --paper: #efe7da;
+  --paper-deep: #e7dccb;
+  --ink: #201e1a;
+  --ink-muted: #6e675c;
+  --coral: #d6382c;
+  --ochre: #d8a33f;
+  --ochre-deep: #a9741f;
+  --rule: rgba(32, 30, 26, 0.18);
+  --rule-strong: rgba(32, 30, 26, 0.45);
+
+  /* Tipografía */
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Espaciado base de 8 px */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  /* Retícula */
+  --page-max: 1560px;
+  --page-pad: clamp(28px, 4vw, 64px);
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
