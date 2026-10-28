@@ -1,4 +1,4 @@
-import type { Place, WeatherData } from './domain/types';
+import type { Place, WeatherCondition, WeatherData } from './domain/types';
 import type { UserLocation } from './api/geolocation';
 import { getTodayDate, formatCoordinates, formatUpdatedAt } from './domain/format';
 import { getDisplayDays, getNextHours } from './domain/forecast';
@@ -55,7 +55,7 @@ export function createApp(root: ParentNode, deps: AppDependencies): AppControlle
     void refresh();
   });
 
-  function renderWeather(data: WeatherData): void {
+  function renderWeather(data: WeatherData): WeatherCondition {
     const condition = getWeatherCondition(data.current.weatherCode);
 
     renderCurrentWeather(currentEl, data, condition);
@@ -65,7 +65,13 @@ export function createApp(root: ParentNode, deps: AppDependencies): AppControlle
       getTodayDate(data.current.time),
     );
     renderHourlyChart(hourlyEl, getNextHours(data.hourly, data.current.time));
-    renderHero(heroEl, condition.family, data.current.isDay, condition.description);
+
+    const night = isNight(state.lastUpdated ?? deps.now(), data.timezone);
+    document.documentElement.dataset.theme = night ? 'night' : 'day';
+
+    renderHero(heroEl, condition.family, !night, condition.description);
+
+    return condition;
   }
 
   function renderPlace(): void {
@@ -90,6 +96,18 @@ export function createApp(root: ParentNode, deps: AppDependencies): AppControlle
       control,
       `ACTUALIZADO ${formatUpdatedAt(state.lastUpdated, state.weather.timezone)}`,
     );
+  }
+
+  function isNight(date: Date, timeZone: string): boolean {
+    const hour = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit',
+      hourCycle: 'h23',
+      timeZone,
+    })
+      .formatToParts(date)
+      .find((part) => part.type === 'hour')?.value;
+    const hourNumber = Number(hour ?? '0');
+    return hourNumber >= 20 || hourNumber < 8;
   }
 
   async function loadPlace(location: UserLocation): Promise<void> {

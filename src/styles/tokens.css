@@ -31,3 +31,17 @@
 
   color-scheme: light;
 }
+
+[data-theme='night'] {
+  --paper: #14110d;
+  --paper-deep: #1c1915;
+  --ink: #efe7da;
+  --ink-muted: #a89e8d;
+  --coral: #d6382c;
+  --ochre: #d8a33f;
+  --ochre-deep: #a9741f;
+  --rule: rgba(239, 231, 218, 0.18);
+  --rule-strong: rgba(239, 231, 218, 0.45);
+
+  color-scheme: dark;
+}

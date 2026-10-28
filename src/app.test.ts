@@ -69,6 +69,16 @@ describe('createApp', () => {
     });
   });
 
+  it('activa el tema nocturno entre las 20:00 y las 08:00', async () => {
+    mountDom();
+    const app = createApp(document, makeDeps({ now: () => new Date('2026-10-28T23:30:00Z') }));
+
+    await app.start();
+
+    expect(document.documentElement.dataset.theme).toBe('night');
+    expect(document.querySelector('#hero .hero__svg')?.getAttribute('data-variant')).toBe('night');
+  });
+
   it('mantiene el clima si falla la geocodificación inversa', async () => {
     mountDom();
     const deps = makeDeps({
