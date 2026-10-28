@@ -1,1 +1,158 @@
-/* Se completa en la tarea 7. */
+.hero__art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+}
+
+.hero__svg {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+  animation: hero-rise 600ms var(--ease-out) both;
+}
+
+.hero__sun,
+.hero__cloud,
+.hero__drop,
+.hero__flake,
+.hero__bolt,
+.hero__star {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hero__sun {
+  animation: hero-sun 700ms var(--ease-out) both;
+}
+
+.hero__cloud {
+  animation: hero-fade 700ms 120ms var(--ease-out) both;
+}
+
+.hero__drop,
+.hero__flake,
+.hero__bolt,
+.hero__star {
+  animation: hero-fade 700ms 220ms var(--ease-out) both;
+}
+
+.hero__line {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hero-line 700ms var(--ease-out) both;
+}
+
+.hero__line:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.hero__line:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.hero__line:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.hero__line:nth-child(5) {
+  animation-delay: 160ms;
+}
+
+.hero__line:nth-child(6) {
+  animation-delay: 200ms;
+}
+
+.hero__word {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin: 0;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-sun {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1199px) {
+  .hero__art {
+    min-height: 320px;
+  }
+
+  .hero__svg {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero__art {
+    min-height: 280px;
+  }
+
+  .hero__svg {
+    max-width: 300px;
+  }
+
+  .hero__word {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero__art {
+    min-height: 220px;
+  }
+
+  .hero__svg {
+    max-width: 240px;
+  }
+}
