@@ -1,166 +1,55 @@
-<div align="center">
+# WeatherApp
 
-# 🌦️ WeatherApp
+Dashboard meteorológico con una estética editorial suizo-japonesa: papel cálido, tinta carbón, acentos coral y ocre, ilustraciones geométricas planas y tipografía Space Grotesk + IBM Plex Mono. La interfaz está en español.
 
-**Aplicación meteorológica moderna con datos en tiempo real**
+Muestra el clima actual, tres métricas (viento, humedad y mínima), el pronóstico de seis días y la curva de temperatura de las próximas ocho horas. La ubicación se obtiene del navegador y, si no responde en ocho segundos o se deniega el permiso, se usa Málaga como ejemplo con un aviso visible.
 
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat&logo=javascript)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3)
-![OpenWeatherMap](https://img.shields.io/badge/API-OpenWeatherMap-orange?style=flat)
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat)
+## Stack
 
-[🚀 Demo](https://weather-app-iota-teal-68.vercel.app/) • [🐛 Issues](https://github.com/n3brrr/WeatherApp/issues) • [📖 Docs](https://openweathermap.org/api)
+- [Vite](https://vite.dev/) + TypeScript
+- [pnpm](https://pnpm.io/) como gestor de paquetes
+- CSS propio con tokens; sin framework de UI ni dependencias en tiempo de ejecución
+- [Vitest](https://vitest.dev/) + jsdom para tests
+- ESLint + typescript-eslint
 
-</div>
+## Comandos
 
----
+```bash
+pnpm install       # instala dependencias
+pnpm dev           # servidor de desarrollo
+pnpm run build     # typecheck + build de producción
+pnpm run lint      # ESLint sin warnings
+pnpm run test      # suite de tests
+pnpm run check     # lint + build + test
+pnpm run preview   # sirve el build de producción
+```
 
-## ⚡ Resumen
+## Estructura
 
-WeatherApp consume la API de OpenWeatherMap para mostrar pronósticos en tiempo real con geolocalización automática y búsqueda manual. Incluye persistencia local y UI responsive para móviles y desktop.
+```text
+src/
+├── api/       # Open-Meteo, geocodificación inversa y geolocalización
+├── domain/    # tipos, códigos WMO, formato y selección de pronóstico
+├── ui/        # renderizado del DOM y estados
+├── styles/    # tokens y CSS por componente
+├── utils/     # helpers de DOM
+├── app.ts     # orquestación con dependencias inyectables
+└── main.ts    # entrada: dependencias reales y arranque
+```
 
-### ✨ Características
+## Datos
 
-- 🎯 **Datos en tiempo real** - Actualización cada 10 min vía One Call API 3.0
-- 🌍 **Geolocalización automática** - Detecta ubicación del usuario
-- 💾 **Persistencia local** - Guarda última búsqueda en localStorage
-- 📱 **Responsive design** - Optimizado para mobile-first
-- 🔍 **Búsqueda global** - Acceso a datos de 200,000+ ciudades
+- **Open-Meteo** para el pronóstico, con la zona horaria del lugar.
+- **BigDataCloud** para resolver el nombre de la ubicación sin API key.
+- Si la geocodificación falla, el clima sigue visible y el encabezado muestra «Tu ubicación».
 
-### 🛠️ Stack Tecnológico
+La actualización manual solo vuelve a consultar Open-Meteo: conserva los datos en pantalla y, si falla, muestra un aviso con reintento.
 
-![Vanilla JS](https://img.shields.io/badge/Vanilla-JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![CSS3](https://img.shields.io/badge/CSS3-Flexbox-1572B6?style=for-the-badge&logo=css3)
-![OpenWeatherMap API](https://img.shields.io/badge/OpenWeather-API%203.0-orange?style=for-the-badge)
+## Alcance
 
----
+La fase actual diseña escritorio y tablet por encima de 768 px. Por debajo de 768 px la interfaz se apila y sigue siendo funcional, pero el diseño fino de móvil queda para una fase posterior.
 
-## 🚀 Instalación
+## Documentación
 
-### Prerequisitos
-
-- Navegador moderno (Chrome 90+, Firefox 88+, Safari 14+)
-- API Key de [OpenWeatherMap](https://openweathermap.org/api)
-
-### Setup Rápido
-
-Clonar repositorio
-git clone https://github.com/n3brrr/WeatherApp.git
-
-Navegar al directorio
-cd WeatherApp
-
-Configurar variables de entorno
-cp .env.example .env
-
-Edita .env con tu API_KEY
-Abrir en navegador
-open index.html
-
-o usar Live Server en VS Code
-
-### Variables de Entorno
-
-| Variable | Requerida | Descripción | Default |
-|----------|-----------|-------------|---------|
-| `WEATHER_API_KEY` | ✅ | API key de OpenWeatherMap | - |
-| `DEFAULT_CITY` | ❌ | Ciudad inicial | `"Madrid"` |
-| `UNITS` | ❌ | Sistema de unidades (`metric`/`imperial`) | `"metric"` |
-
-**Archivo `.env`:**
-
-WEATHER_API_KEY=tu_api_key_aqui
-DEFAULT_CITY=Barcelona
-UNITS=metric
-
----
-
-## 💻 Uso Básico
-
-// Búsqueda manual de ciudad
-searchWeather("Tokyo");
-
-// Obtener clima de ubicación actual
-getCurrentWeather();
-
-// Acceder a datos guardados
-const lastCity = localStorage.getItem('lastSearchedCity');
-
-
-**La aplicación se inicializa automáticamente al cargar `index.html`**[attached_file:1].
-
----
-
-## 📁 Estructura del Proyecto
-
-WeatherApp/
-
-├── index.html # Estructura HTML principal
-
-├── styles.css # Estilos responsive + variables CSS
-
-├── app.js # Lógica de API + DOM manipulation
-
-├── .env.example # Plantilla de configuración
-
-├── README.md
-
-└── assets/
-
-├── icons/ # Iconos SVG del clima (50 estados)
-
-└── fonts/ # Roboto, Open Sans
-
----
-
-## 🔄 Arquitectura
-
-
-**Flujo de datos:** El usuario introduce una ciudad o activa geolocalización → `app.js` realiza fetch a OpenWeatherMap → Respuesta JSON se procesa y actualiza el DOM → Última búsqueda se guarda en localStorage para persistencia.
-
----
-
-## 🧪 Testing
-
-Tests unitarios
-npm test
-
-Verificar cobertura
-npm run test:coverage
-
-Linting
-npm run lint:js
-npm run lint:css
-npm run lint:html
-
- 
-
-![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen?style=flat)
-![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen?style=flat)
-
----
-
-## 📄 Licencia
-
-MIT License - ver [LICENSE](https://github.com/n3brrr/WeatherApp/blob/main/LICENSE)
-
----
-
-## 👤 Autor
-
-**Rubén** - [@n3brrr](https://github.com/n3brrr)
-
----
-
-<div align="center">
-
-⭐ **Si te fue útil, considera dejar una estrella**
-
-![GitHub Stars](https://img.shields.io/github/stars/n3brrr/WeatherApp?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/n3brrr/WeatherApp?style=social)
-
-</div>
-
-
-
+- [Especificación de diseño](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md)
+- [Plan de implementación](docs/superpowers/plans/2026-10-28-weather-app-refactor.md)

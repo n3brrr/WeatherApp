@@ -1,0 +1,104 @@
+.hourly {
+  min-width: 0;
+}
+
+.hourly__label {
+  margin-bottom: 8px;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.hourly__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+.hourly__chart {
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+  overflow: visible;
+}
+
+.hourly__rule {
+  stroke: var(--rule);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hourly__baseline {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.hourly__line {
+  fill: none;
+  stroke: var(--ochre-deep);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  animation: hourly-draw 900ms var(--ease-out) 120ms forwards;
+}
+
+.hourly__dot {
+  fill: var(--ochre-deep);
+  animation: hourly-fade 400ms var(--ease-out) 500ms both;
+}
+
+.hourly__dot--now {
+  fill: var(--coral);
+}
+
+.hourly__temp {
+  fill: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.hourly__time {
+  fill: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+@keyframes hourly-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hourly-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hourly__chart {
+    min-width: 660px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hourly__chart {
+    min-width: 620px;
+  }
+}

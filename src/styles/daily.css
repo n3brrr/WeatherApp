@@ -1,0 +1,125 @@
+.daily {
+  min-width: 0;
+}
+
+.daily__label {
+  margin-bottom: 12px;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.daily__list {
+  border-top: 1px solid var(--rule);
+}
+
+.daily__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.5rem 28px minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: center;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.daily__row::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  content: '';
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms var(--ease-out);
+}
+
+.daily__row:hover::after,
+.daily__row:focus-within::after {
+  transform: scaleX(1);
+}
+
+.daily__day {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.daily__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+
+.daily__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.daily__temps {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
+  transition: transform 220ms var(--ease-out);
+}
+
+.daily__row:hover .daily__temps {
+  transform: translateX(2px);
+}
+
+.daily__max,
+.daily__min {
+  min-width: 2.6ch;
+  text-align: right;
+}
+
+.daily__max {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.daily__min {
+  color: var(--ink-muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+@media (max-width: 1199px) {
+  .daily__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--space-4);
+    border-top: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .daily__list {
+    column-gap: var(--space-3);
+  }
+
+  .daily__row {
+    padding-block: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .daily__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-2);
+  }
+}
