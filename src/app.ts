@@ -1,6 +1,7 @@
 import type { Place, WeatherCondition, WeatherData } from './domain/types';
 import type { UserLocation } from './api/geolocation';
 import { getTodayDate, formatCoordinates, formatUpdatedAt } from './domain/format';
+import { isNightAt } from './domain/daylight';
 import { getDisplayDays, getNextHours } from './domain/forecast';
 import { getWeatherCondition } from './domain/weatherCodes';
 import { renderCurrentWeather } from './ui/currentWeather';
@@ -66,7 +67,7 @@ export function createApp(root: ParentNode, deps: AppDependencies): AppControlle
     );
     renderHourlyChart(hourlyEl, getNextHours(data.hourly, data.current.time));
 
-    const night = isNight(state.lastUpdated ?? deps.now(), data.timezone);
+    const night = isNightAt(state.lastUpdated ?? deps.now(), data.timezone, data.daily);
     document.documentElement.dataset.theme = night ? 'night' : 'day';
 
     renderHero(heroEl, condition.family, !night, condition.description);
@@ -96,18 +97,6 @@ export function createApp(root: ParentNode, deps: AppDependencies): AppControlle
       control,
       `ACTUALIZADO ${formatUpdatedAt(state.lastUpdated, state.weather.timezone)}`,
     );
-  }
-
-  function isNight(date: Date, timeZone: string): boolean {
-    const hour = new Intl.DateTimeFormat('en-GB', {
-      hour: '2-digit',
-      hourCycle: 'h23',
-      timeZone,
-    })
-      .formatToParts(date)
-      .find((part) => part.type === 'hour')?.value;
-    const hourNumber = Number(hour ?? '0');
-    return hourNumber >= 20 || hourNumber < 8;
   }
 
   async function loadPlace(location: UserLocation): Promise<void> {
