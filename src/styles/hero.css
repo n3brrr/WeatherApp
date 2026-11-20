@@ -150,10 +150,11 @@
 
 @media (max-width: 768px) {
   .hero__art {
-    min-height: 220px;
+    min-height: 0;
+    padding-top: var(--space-1);
   }
 
   .hero__svg {
-    max-width: 240px;
+    max-width: min(260px, 70vw);
   }
 }
