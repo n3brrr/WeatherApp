@@ -121,7 +121,10 @@
   }
 
   .masthead__brand {
-    height: 56px;
+    width: auto;
+    height: auto;
+    padding: 6px 8px;
+    writing-mode: horizontal-tb;
   }
 
   .masthead__coords {

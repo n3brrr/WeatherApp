@@ -98,6 +98,13 @@
 }
 
 @media (max-width: 768px) {
+  .hourly__scroll {
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    margin-right: calc(var(--space-2) * -1);
+    padding-right: var(--space-2);
+  }
+
   .hourly__chart {
     min-width: 620px;
   }

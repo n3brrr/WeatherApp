@@ -69,7 +69,7 @@ describe('createApp', () => {
     });
   });
 
-  it('activa el tema nocturno entre las 20:00 y las 08:00', async () => {
+  it('activa el tema nocturno fuera del tramo entre amanecer y ocaso', async () => {
     mountDom();
     const app = createApp(document, makeDeps({ now: () => new Date('2026-10-28T23:30:00Z') }));
 
