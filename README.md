@@ -4,88 +4,89 @@
 
 # WeatherApp
 
-**El clima, leído como una página de revista.**
+**The weather, read like a magazine page.**
 
-Dashboard meteorológico con estética editorial suizo-japonesa: papel cálido, tinta carbón, acentos coral y ocre, ilustraciones geométricas planas y un tema nocturno que sigue al amanecer y al ocaso reales del lugar.
+A weather dashboard with a Swiss-Japanese editorial look: warm paper, charcoal ink, coral and ochre accents, flat geometric illustrations and a night theme that follows the real sunrise and sunset of the place.
 
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-5-6E9F18?logo=vitest&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-10-4B32C3?logo=eslint&logoColor=white)
-![Open-Meteo](https://img.shields.io/badge/datos-Open--Meteo-1E88E5)
+![Open-Meteo](https://img.shields.io/badge/data-Open--Meteo-1E88E5)
 
-[Especificación de diseño](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md) · [Plan de implementación](docs/superpowers/plans/2026-10-28-weather-app-refactor.md)
+[Design spec](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md) · [Implementation plan](docs/superpowers/plans/2026-10-28-weather-app-refactor.md)
 
-<img src="docs/img/screenshot-desktop.png" alt="Pantalla principal de WeatherApp en escritorio con el clima actual, el pronóstico de seis días y la curva de las próximas ocho horas" width="100%" />
+<img src="docs/img/screenshot-desktop.png" alt="WeatherApp main screen on desktop showing the current weather, the six-day forecast and the temperature curve for the next eight hours" width="100%" />
 
 </div>
 
 ---
 
-## Índice
+## Table of contents
 
-- [Descripción](#descripción)
-- [Funcionalidades](#funcionalidades)
-- [Arquitectura](#arquitectura)
-- [Puesta en marcha](#puesta-en-marcha)
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Getting started](#getting-started)
 - [Scripts](#scripts)
-- [Calidad y tests](#calidad-y-tests)
-- [Datos y fuentes](#datos-y-fuentes)
-- [Despliegue](#despliegue)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Contribuir](#contribuir)
+- [Quality and tests](#quality-and-tests)
+- [Data and sources](#data-and-sources)
+- [Deployment](#deployment)
+- [Project structure](#project-structure)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
 
-## Descripción
+## Overview
 
-WeatherApp es una SPA en TypeScript que muestra el tiempo de la ubicación del usuario en una sola pantalla. No tiene backend ni cuentas: los datos llegan de APIs públicas sin clave y toda la lógica se ejecuta en el navegador.
+WeatherApp is a TypeScript SPA that shows the weather for the user's location on a single screen. It has no backend and no accounts: data comes from public APIs that need no key, and all the logic runs in the browser.
 
-La interfaz está en **español** y se pensó primero para escritorio y tablet, con un apilado responsive para pantallas más pequeñas.
+The interface is in **Spanish**. It was designed desktop and tablet first, with a responsive stacked layout for smaller screens.
 
-## Funcionalidades
+## Features
 
-| Área                  | Qué ofrece                                                                                                                                                  |
+| Area                  | What it offers                                                                                                                                              |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Clima actual**      | Temperatura grande, descripción del estado del cielo y tres métricas: viento, humedad y mínima del día.                                                    |
-| **Pronóstico**        | Seis días con icono, máxima y mínima, a partir de Open-Meteo y con la zona horaria del lugar.                                                              |
-| **Próximas 8 horas**  | Curva de temperatura con cada hora etiquetada y eje de tiempo, pensada para ver de un vistazo la tendencia del día.                                       |
-| **Tema nocturno**    | Cambia de paleta según el amanecer y el ocaso reales de la ubicación. Sin datos solares de ese día, usa de 20:00 a 08:00 como respaldo.                    |
-| **Ubicación**         | Usa la geolocalización del navegador. Si no responde en 8 segundos o se deniega el permiso, muestra Málaga como ejemplo con un aviso visible.              |
-| **Actualización**     | Botón manual que vuelve a consultar el pronóstico. Si falla, conserva los datos en pantalla y ofrece reintentar.                                          |
-| **Nombre del lugar**  | Si la geocodificación inversa falla, el clima sigue visible y el encabezado muestra «Tu ubicación».                                                        |
+| **Current weather**   | Large temperature, a description of the sky and three metrics: wind, humidity and the day's low.                                                           |
+| **Forecast**          | Six days with icon, high and low, from Open-Meteo and in the place's own time zone.                                                                        |
+| **Next 8 hours**      | Temperature curve with every hour labelled and a time axis, built to show the day's trend at a glance.                                                     |
+| **Night theme**       | Switches palette using the real sunrise and sunset of the location. With no solar data for that day, it falls back to 20:00–08:00.                         |
+| **Location**          | Uses the browser's geolocation. If it does not answer within 8 seconds or permission is denied, it shows Málaga as an example with a visible notice.        |
+| **Refresh**           | Manual button that queries the forecast again. If it fails, it keeps the data on screen and offers a retry.                                                |
+| **Place name**        | If reverse geocoding fails, the weather stays visible and the header shows «Tu ubicación» ("Your location").                                               |
 
-## Arquitectura
+## Architecture
 
 ```mermaid
 flowchart LR
-  subgraph Navegador["Navegador · SPA en TypeScript"]
-    M["main.ts<br/>dependencias reales"] --> A["app.ts<br/>orquestación"]
-    A --> U["ui/<br/>render del DOM y estados"]
-    A --> D["domain/<br/>tipos, códigos WMO, pronóstico"]
-    A --> P["api/<br/>acceso a datos"]
+  subgraph Browser["Browser · TypeScript SPA"]
+    M["main.ts<br/>real dependencies"] --> A["app.ts<br/>orchestration"]
+    A --> U["ui/<br/>DOM rendering and states"]
+    A --> D["domain/<br/>types, WMO codes, forecast"]
+    A --> P["api/<br/>data access"]
   end
-  P -->|pronóstico| OM[(Open-Meteo)]
-  P -->|nombre del lugar| BDC[(BigDataCloud)]
-  P -->|posición| GEO[Geolocation API]
+  P -->|forecast| OM[(Open-Meteo)]
+  P -->|place name| BDC[(BigDataCloud)]
+  P -->|position| GEO[Geolocation API]
 ```
 
-- **`app.ts` recibe sus dependencias** (geolocalización, clima, geocodificación) por parámetro. `main.ts` las conecta con las implementaciones reales, así la orquestación se prueba sin red.
-- **`domain/` no toca el DOM ni la red.** Ahí viven los tipos, la traducción de los códigos WMO a estados visuales, el formato y la selección del pronóstico (incluido el cálculo de día o noche).
-- **`ui/` solo pinta.** Cada componente (clima actual, pronóstico diario, curva horaria, icono de la ilustración, aviso de estado) recibe datos ya preparados.
-- **`styles/` usa tokens.** Los colores y tipografías están en `tokens.css`; el tema nocturno invierte esos tokens en lugar de duplicar estilos.
+- **`app.ts` receives its dependencies** (geolocation, weather, geocoding) as parameters. `main.ts` wires them to the real implementations, so the orchestration can be tested without a network.
+- **`domain/` never touches the DOM or the network.** It holds the types, the translation of WMO codes into visual states, formatting and forecast selection (including the day/night calculation).
+- **`ui/` only paints.** Each component (current weather, daily forecast, hourly curve, illustration icon, status notice) receives data that is already prepared.
+- **`styles/` uses tokens.** Colors and typography live in `tokens.css`; the night theme inverts those tokens instead of duplicating styles.
 
-## Puesta en marcha
+## Getting started
 
-### Requisitos
+### Requirements
 
-- Node.js 22 o superior
-- [pnpm](https://pnpm.io/) como gestor de paquetes
+- Node.js 22 or later
+- [pnpm](https://pnpm.io/) as the package manager
 
-WeatherApp no necesita claves de API ni variables de entorno.
+WeatherApp needs no API keys or environment variables.
 
-### Instalación
+### Installation
 
 ```bash
-git clone <url-del-repositorio> WeatherApp
+git clone <repository-url> WeatherApp
 cd WeatherApp
 pnpm install
 pnpm dev   # http://localhost:5173
@@ -93,74 +94,77 @@ pnpm dev   # http://localhost:5173
 
 ## Scripts
 
-| Comando            | Descripción                                                             |
-| ------------------ | ----------------------------------------------------------------------- |
-| `pnpm dev`         | Servidor de desarrollo de Vite en `localhost:5173`.                     |
-| `pnpm run build`   | Comprobación de tipos con `tsc --noEmit` y build de producción en `dist/`. |
-| `pnpm run preview` | Sirve el build de producción para revisarlo en local.                   |
-| `pnpm run lint`    | ESLint con `--max-warnings 0`.                                          |
-| `pnpm run test`    | Suite de tests con Vitest.                                              |
-| `pnpm run check`   | Lint, build y tests en una sola orden. Úsala antes de abrir un cambio.   |
+| Command            | Description                                                              |
+| ------------------ | ------------------------------------------------------------------------ |
+| `pnpm dev`         | Vite development server on `localhost:5173`.                             |
+| `pnpm run build`   | Type check with `tsc --noEmit` and production build into `dist/`.        |
+| `pnpm run preview` | Serves the production build so you can review it locally.                |
+| `pnpm run lint`    | ESLint with `--max-warnings 0`.                                          |
+| `pnpm run test`    | Vitest test suite.                                                       |
+| `pnpm run check`   | Lint, build and tests in a single command. Run it before opening a change. |
 
-## Calidad y tests
+## Quality and tests
 
-- **Tests unitarios con Vitest** sobre dominio, API, UI y la orquestación de la app (16 ficheros, 87 pruebas). Incluyen, por ejemplo, la selección del pronóstico y el cálculo de día y noche.
-- **ESLint con typescript-eslint:** `pnpm run lint` falla ante cualquier warning.
-- **Fixtures compartidos** en `src/test/fixtures.ts` para no repetir respuestas de Open-Meteo en cada prueba.
+- **Unit tests with Vitest** covering the domain, the API layer, the UI and the app orchestration (16 files, 87 tests). They include, for example, forecast selection and the day/night calculation.
+- **ESLint with typescript-eslint:** `pnpm run lint` fails on any warning.
+- **CI:** a GitHub Actions workflow runs `pnpm run check` on every pull request to `main` or `dev` and on every push to `main`.
+- **Shared fixtures** in `src/test/fixtures.ts` so Open-Meteo responses are not repeated in every test.
 
-## Datos y fuentes
+## Data and sources
 
-- **[Open-Meteo](https://open-meteo.com/)** para el clima actual, las horas siguientes y los siete días de pronóstico (se muestran seis). Pide la zona horaria del lugar con `timezone=auto`, de modo que las horas y el amanecer/ocaso son locales.
-- **[BigDataCloud](https://www.bigdatacloud.com/)** para convertir las coordenadas en un nombre de ubicación, sin API key.
-- **Geolocalización del navegador** para la posición inicial. Sin permiso o sin respuesta en 8 segundos, se usa Málaga y se avisa al usuario.
+- **[Open-Meteo](https://open-meteo.com/)** for the current weather, the next hours and the seven-day forecast (six are shown). It asks for the place's time zone with `timezone=auto`, so hours and sunrise/sunset are local.
+- **[BigDataCloud](https://www.bigdatacloud.com/)** to turn coordinates into a place name, with no API key.
+- **Browser geolocation** for the initial position. Without permission, or with no answer within 8 seconds, it uses Málaga and notifies the user.
 
-La actualización manual solo vuelve a consultar Open-Meteo: conserva lo que hay en pantalla y, si falla, muestra un aviso con reintento.
+The manual refresh only queries Open-Meteo again: it keeps what is on screen and, if it fails, shows a notice with a retry option.
 
-## Despliegue
+## Deployment
 
-El build es estático. `vite.config.ts` fija `base: './'`, así que `dist/` puede servirse desde la raíz de cualquier dominio o desde una subcarpeta sin reconfigurar nada.
+The build is static. `vite.config.ts` sets `base: './'`, so `dist/` can be served from the root of any domain or from a subfolder without further configuration.
 
 ```bash
-pnpm run build     # genera dist/
-pnpm run preview   # revisa el resultado en local
+pnpm run build     # generates dist/
+pnpm run preview   # review the result locally
 ```
 
-## Estructura del proyecto
+## Project structure
 
 ```text
 WeatherApp/
 ├── src/
-│   ├── api/           # Open-Meteo, geocodificación inversa y geolocalización
-│   ├── domain/        # tipos, códigos WMO, pronóstico, formato y luz diurna
-│   ├── ui/            # render del DOM y estados (clima, pronóstico, curva, avisos)
-│   ├── styles/        # tokens y CSS por componente
-│   ├── utils/         # helpers del DOM
-│   ├── test/          # fixtures compartidos
-│   ├── app.ts         # orquestación con dependencias inyectables
-│   └── main.ts        # entrada: dependencias reales y arranque
-├── public/            # favicon y recursos estáticos
+│   ├── api/           # Open-Meteo, reverse geocoding and geolocation
+│   ├── domain/        # types, WMO codes, forecast, formatting and daylight
+│   ├── ui/            # DOM rendering and states (weather, forecast, curve, notices)
+│   ├── styles/        # tokens and per-component CSS
+│   ├── utils/         # DOM helpers
+│   ├── test/          # shared fixtures
+│   ├── app.ts         # orchestration with injectable dependencies
+│   └── main.ts        # entry point: real dependencies and startup
+├── public/            # favicon and static assets
 ├── docs/
-│   ├── img/           # capturas para este README
-│   └── superpowers/   # especificaciones y planes de implementación
+│   ├── img/           # screenshots for this README
+│   └── superpowers/   # specs and implementation plans
 ├── index.html
 └── vite.config.ts
 ```
 
-## Documentación
+## Documentation
 
-- [Especificación de diseño](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md) — refactor de la app y decisiones de arquitectura.
-- [Especificación de ajustes visuales](docs/superpowers/specs/2026-10-28-weather-app-refactor-visual-fixes-design.md) — correcciones de diseño y tema nocturno.
-- [Plan de implementación](docs/superpowers/plans/2026-10-28-weather-app-refactor.md) — pasos seguidos para el refactor.
+The linked documents are written in Spanish.
 
-## Contribuir
+- [Design spec](docs/superpowers/specs/2026-10-28-weather-app-refactor-design.md) — app refactor and architecture decisions.
+- [Visual fixes spec](docs/superpowers/specs/2026-10-28-weather-app-refactor-visual-fixes-design.md) — design corrections and the night theme.
+- [Implementation plan](docs/superpowers/plans/2026-10-28-weather-app-refactor.md) — steps followed for the refactor.
 
-1. Crea una rama desde `dev` (`feat/...`, `fix/...`).
-2. Mantén la separación por capas: lo que decide datos o reglas va en `domain/`, no en `ui/`.
-3. Usa [Conventional Commits](https://www.conventionalcommits.org/) con ámbito, por ejemplo `fix(ui): ...` o `feat(app): ...`.
-4. Ejecuta `pnpm run check` antes de abrir la pull request.
+## Contributing
+
+1. Create a branch from `dev` (`feat/...`, `fix/...`).
+2. Keep the layer separation: anything that decides data or rules goes in `domain/`, not in `ui/`.
+3. Use [Conventional Commits](https://www.conventionalcommits.org/) with a scope, for example `fix(ui): ...` or `feat(app): ...`. Write commits and pull requests in English.
+4. Run `pnpm run check` before opening the pull request.
 
 <div align="center">
 
-Si el proyecto te resulta útil, deja una ⭐ en el repositorio.
+If you find the project useful, leave a ⭐ on the repository.
 
 </div>

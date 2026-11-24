@@ -1,12 +1,12 @@
-## Qué cambia
+## What changed
 
-- **<Cambio 1>** (`<hash corto>`): una línea.
+- **<Change 1>** (`<short hash>`): one line.
 
-## Por qué
+## Why
 
-Motivo del conjunto: qué problema resuelve o qué aporta.
+Reason for the set as a whole: what problem it solves or what it adds.
 
-## Cómo se probó
+## How it was tested
 
-- `pnpm run check` pasa en local: <resultado real>.
-- Pruebas manuales o capturas, si las hay.
+- `pnpm run check` passes locally: <real result>.
+- Manual checks or screenshots, if any.
